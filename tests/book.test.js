@@ -52,8 +52,8 @@ describe("test to check async function", () => {
 describe("test to check async function", () => {
   it("test async addition with await", async () => {
     // ARRANGE
-    const num1 = 10;
-    const num2 = 20;
+    const num1 = 20;
+    const num2 = 10;
 
     // ACT
     const result = await mathFunction.add(num1, num2);
