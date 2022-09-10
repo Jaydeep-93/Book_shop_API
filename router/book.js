@@ -6,11 +6,13 @@ const router = express.Router();
 
 router.get("/", bookController.getAllBooks);
 
-router.get("/:bookdId", bookController.getBookByID);
+router.get("/:bookId", bookController.getBookByID);
 
 router.post("/", bookController.addBook);
 
-router.put("/:bookdId", bookController.updateBook);
+router.put("/:bookId", bookController.updateBook);
+
+router.delete("/deleteAll", bookController.deleteAll); 
 
 router.delete("/:bookId", bookController.deleteBook);
 
