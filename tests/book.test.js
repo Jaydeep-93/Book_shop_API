@@ -1,71 +1,106 @@
-jest.setTimeout(10000);
-const mathFunction = require("../math");
+const request = require("supertest");
+const app = require("../index");
+const Book = require("../src/model/book");
 
-describe("Testing functionality of temprature converter", () => {
-  it("Convert F to C", () => {
+describe("Book CRUD testing", () => {
+  beforeAll(async () => {
+    await Book.deleteMany();
+  });
+
+  let bookId = null;
+
+  test("Create book", async () => {
     // ARRANGE
-    const input = 32;
+    const book = {
+      name: "Harry porter",
+      category: "Witchcraft",
+      price: 12.99,
+    };
 
     // ACT
-    const result = mathFunction.fahrenheitToCelsius(input);
+    const resultOfCreation = await request(app).post("/book").send(book);
 
     // ASSERT
-    expect(result).toBe(0);
+    bookId = resultOfCreation.body.result._id;
+    expect(resultOfCreation.body).toHaveProperty(
+      "message",
+      "Book created successfully :)"
+    );
+    expect(resultOfCreation).toHaveProperty("status", 201);
   });
 
-  it("Convert C to F", () => {
+  test("Get Book by Id", async () => {
     // ARRANGE
-    const input = 0;
+    // bookId
 
     // ACT
-    const result = mathFunction.celsiusToFahrenheit(input);
+    const result = await request(app).get(`/book/${bookId}`).send();
 
     // ASSERT
-    expect(result).toBe(32);
+    expect(result.body).toHaveProperty("message", "Requested book found :)");
+    expect(result).toHaveProperty("status", 200);
   });
-});
 
-describe("test settimeout", () => {
-  it("test async funtion", (done) => {
-    setTimeout(() => {
-      expect(1).toBe(1);
-      done();
-    }, 2000);
-  });
-});
-
-describe("test to check async function", () => {
-  it("test async addition", (done) => {
+  test("Get all books", async () => {
     // ARRANGE
-    const num1 = 10;
-    const num2 = 20;
 
     // ACT
-    mathFunction.add(num1, num2).then((value) => {
-      // ASSERT
-      expect(value).toBe(30);
-      done();
-    });
-  });
-});
-
-describe("test to check async function", () => {
-  it("test async addition with await", async () => {
-    // ARRANGE
-    const num1 = 20;
-    const num2 = 10;
-
-    // ACT
-    const result = await mathFunction.add(num1, num2);
+    const books = await request(app).get("/book").send();
 
     // ASSERT
-    expect(result).toBe(30);
+    expect(books.body).toHaveProperty(
+      "message",
+      "Books fetched successFully :)"
+    );
+    expect(books).toHaveProperty("status", 200);
+  });
+
+  test("update Book by Id", async () => {
+    // ARRANGE
+    const data = {
+      _id: bookId,
+      name: "updated Harry porter",
+      category: "updated Witchcraft",
+      price: 13.99,
+    };
+
+    // ACT
+    const result = await request(app).put(`/book/${data._id}`).send(data);
+
+    // ASSERT
+    expect(result.body).toHaveProperty(
+      "message",
+      "Book updated successFully :)"
+    );
+    expect(result).toHaveProperty("status", 200);
+  });
+
+  test("delete Book by Id", async () => {
+    // ARRANGE
+    // bookId
+
+    // ACT
+    const result = await request(app).delete(`/book/${bookId}`).send();
+
+    // ASSERT
+    expect(result.body).toHaveProperty(
+      "message",
+      "Book deleted successfully :)"
+    );
+    expect(result).toHaveProperty("status", 201);
+  });
+
+  test("delete all books", async () => {
+    // ARRANGE
+
+    // ACT
+    const result = await request(app).delete("/book/deleteAll").send();
+
+    // ASSERT
+    expect(result.body).toHaveProperty(
+      "message",
+      "Deleted all books sucessfully"
+    );
+    expect(result).toHaveProperty("status", 200);
   });
 });
-
-// Goal: Test temperature conversion functions
-//
-// 1. Export both functions and load them into test suite
-// 2. Create "Should convert 32 F to 0 C"
-// 3. Create "Should convert 0 C to 32 F"
-// 4. Run the Jest to test your work!

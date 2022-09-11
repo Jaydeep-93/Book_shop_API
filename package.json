@@ -7,6 +7,9 @@
     "start": "nodemon app.js",
     "test": "jest --watch"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [
     "node",
     "express"
@@ -16,7 +19,8 @@
   "devDependencies": {
     "jest": "^29.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "supertest": "^6.2.4"
   },
   "dependencies": {
     "cors": "^2.8.5",
