@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require('mongoose'); 
 
 const bookRouter = require("./src/router/book");
+const userRouter = require("./src/router/user");
 
 // creating server app
 const app = express();
@@ -14,11 +15,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-// database connection 
-mongoose.connect('mongodb+srv://root:root@cluster0.ig3bra3.mongodb.net/Book_shop_API')
+// database connection
+mongoose.connect(
+  "mongodb+srv://root:root@cluster0.ig3bra3.mongodb.net/Book_shop_API"
+);
 
 // routes added
 app.use("/book", bookRouter);
+app.use("/user", userRouter);
 
 // if not route found
 app.use((req, res, next) => {
