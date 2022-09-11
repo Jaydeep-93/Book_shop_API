@@ -34,6 +34,18 @@ describe("User CRUD operation", () => {
     expect(response).toHaveProperty("status", 200);
   });
 
+  it("login user with email password", async () => {
+    // ARRANGE
+    const user = { email: "user@test", password: "123" };
+
+    // ACT
+    const response = await request(app).get("/user/login").send(user);
+
+
+    // ASSERT
+    expect(response).toHaveProperty("status", 200);
+  });
+
   it("get all users", async () => {
     // ARRANGE
 
