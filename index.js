@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const bookRouter = require("./src/router/book");
 const userRouter = require("./src/router/user");
+const authRouter = require("./src/router/auth");
 
 // creating server app
 const app = express();
@@ -23,6 +24,7 @@ mongoose.connect(
 // routes added
 app.use("/book", bookRouter);
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 // if not route found
 app.use((req, res, next) => {
