@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require('mongoose'); 
+const dotenv = require("dotenv");
+dotenv.config();
 
 const bookRouter = require("./src/router/book");
 const userRouter = require("./src/router/user");
